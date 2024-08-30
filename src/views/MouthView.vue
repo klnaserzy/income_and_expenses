@@ -47,8 +47,7 @@
     <div class="mouthContainer">
         <div class="day" v-for="day in lastDay" :key="day">
             <p style="text-align: right; padding-right: 5px; font-weight: 700;">{{ day }}</p>
-            <div class="assetDetails" v-for="asset in 10">
-                123
+            <div class="assetDetails" v-for="asset in 10" :key="asset">
             </div>
         </div>
     </div>
