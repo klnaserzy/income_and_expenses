@@ -1,6 +1,6 @@
 <script setup>
 import NumeralCalculations from './components/NumeralCalculations.vue';
-import MouthView from './views/MouthView.vue';
+import MouthView from './views/MonthView.vue';
 import { ref, onMounted } from 'vue';
 import { data, fetchData } from './fetch/fetchApi.js'
 
@@ -32,6 +32,7 @@ onMounted(() => {
 
 <style scoped>
   .background  {
+    background-image: url("@/assets/cat.jpg");
     background-position: 50%;
     width: 100vw;
     background-size: cover;
