@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, defineProps } from 'vue';
     import SelectionPeriod from "../components/SelectionPeriod.vue"
 
     const time = new Date();
@@ -9,7 +9,7 @@
     const month = ref(nowMonth);
     const lastDay = ref(new Date(year.value, month.value, 0).getDate());
     const props = defineProps({
-        amountRecord: Object
+        amountRecordProp: Object
     });
     const incomeAndExpenses = ref();
 
@@ -26,11 +26,10 @@
     }
 
     const changeIncomeAndExpenses = () => {
-        console.log(props.amountRecord["y" + year.value]["month"][month.value]["13"]);
-        console.log(props.amountRecord["y" + year.value]["month"][month.value]);
+        console.log(props.amountRecordProp?.amountRecord || 0);
+        console.log(props.amountRecordProp?.amountRecord?.["y" + year.value]?.["month"]?.[month.value] || 0);
     }
 
-    
 
 </script>
 
@@ -65,7 +64,7 @@
 
     .mouthContainer {
         padding: 30px;
-        background-color: #888;
+        background-color: #88888800;
         width: 70vw;
         height: 80vh;
         gap: 10px;
@@ -74,6 +73,6 @@
     }
 
     .day {
-        background-color: aqua;
+        background-color: rgba(0, 255, 255, 0.39);
     }
 </style> 

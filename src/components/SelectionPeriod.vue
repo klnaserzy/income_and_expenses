@@ -31,7 +31,7 @@
 
 <template>
     <select v-model="selectedYear">
-        <option v-for="year in years" :value="year" :key="year" :selected="year===2024">{{ year }}</option>
+        <option v-for="year in years" :value="year" :key="year">{{ year }}</option>
     </select>
     <select v-model="selectedMonth">
         <option v-for="month in months" :value="month" :key="month">{{ month }}</option>
