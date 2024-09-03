@@ -5,11 +5,11 @@ import { ref, onMounted } from 'vue';
 import { data, fetchData } from './fetch/fetchApi.js'
 
 const show  = ref(true);
-const amountRecord = ref(data.value); // 使用ref來監聽響應性數據的變化
+const amountRecord = ref(data.value);
 
 const getData = async () => {
-  await fetchData("src/data/moneyData.json");
-  amountRecord.value = data.value; // 更新本地數據
+  await fetchData("data/moneyData.json");
+  amountRecord.value = data.value;
 };
 
 onMounted(() => {
