@@ -33,9 +33,11 @@ onMounted(() => {
 <style scoped>
   .background  {
     background-image: url("@/assets/cat.jpg");
-    background-position: 50%;
-    width: 100vw;
+    background-attachment: fixed;
+    background-position: center;
     background-size: cover;
+    width: 100%;
+    overflow-x: hidden;
 
     display: flex;
   }
@@ -47,8 +49,19 @@ onMounted(() => {
     margin: 10px;
   }
 
-  
   button:hover {
     cursor: pointer;
+  }
+  
+  @media (max-width: 1024px) {
+    .background {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 720px) {
+    .background {
+      background-position: 20%;
+    }
   }
 </style>

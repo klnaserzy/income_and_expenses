@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, defineProps } from 'vue';
+    import { ref, defineProps, computed } from 'vue';
     import SelectionPeriod from "../components/SelectionPeriod.vue"
 
     const time = new Date();
@@ -11,42 +11,51 @@
     const props = defineProps({
         amountRecordProp: Object
     });
-    const incomeAndExpenses = ref();
-
+    const wholeMonthData = computed(() => props.amountRecordProp?.["y" + year.value]?.[month.value] || 0);
+    const monthIncomeAndExpenses = computed(() => {
+        const monthData = [];
+        Object.values(wholeMonthData.value).map(daily => {
+            const dailyData = [];
+            dailyData.push(...Object.keys(daily.income));
+            dailyData.push(...Object.keys(daily.expenses));
+            monthData.push(dailyData);
+        })
+        return monthData;
+    });
+    const simpleMonth = computed(() => 
+        monthIncomeAndExpenses.value.map(dailyArr => 
+            dailyArr.filter((data, index) => index < 4)
+        )
+    )
+    
     const changeYear = (selectedYear, selectedLastDay) => {
         year.value = selectedYear;
         lastDay.value = selectedLastDay;
-        changeIncomeAndExpenses();
     }
 
     const changeMonth = (selectedMonth, selectedLastDay) => {
         month.value = selectedMonth;
         lastDay.value = selectedLastDay;
-        changeIncomeAndExpenses();
     }
-
-    const changeIncomeAndExpenses = () => {
-        console.log(props.amountRecordProp?.amountRecord || 0);
-        console.log(props.amountRecordProp?.amountRecord?.["y" + year.value]?.["month"]?.[month.value] || 0);
-    }
-
-
 </script>
 
 <template>
-    <div class="date">
-        <SelectionPeriod 
-            @year="(selectedYear, selectedLastDay) => changeYear(selectedYear, selectedLastDay)" 
-            @month="(selectedMonth, selectedLastDay) => changeMonth(selectedMonth, selectedLastDay)"
-            @lastDay="(selectedLastDay) => lastDay = selectedLastDay"
-        ></SelectionPeriod>
-        <h1>{{ year }}年</h1>
-        <h1>{{ month }}月</h1>
-    </div>
-    <div class="mouthContainer">
-        <div class="day" v-for="day in lastDay" :key="day">
-            <p style="text-align: right; padding-right: 5px; font-weight: 700;">{{ day }}</p>
-            <div class="assetDetails" v-for="asset in 10" :key="asset">
+    <div class="calendar">
+        <div class="date">
+            <SelectionPeriod 
+                @year="(selectedYear, selectedLastDay) => changeYear(selectedYear, selectedLastDay)" 
+                @month="(selectedMonth, selectedLastDay) => changeMonth(selectedMonth, selectedLastDay)"
+                @lastDay="(selectedLastDay) => lastDay = selectedLastDay"
+            ></SelectionPeriod>
+        </div>
+        <div class="monthContainer">
+            <div class="day" v-for="day, index in simpleMonth" :key="index">
+                <p style="text-align: right; padding-right: 5px; font-weight: 700;">{{ index + 1 }}</p>
+                <div class="assetDetails" v-for="asset, index in day" :key="asset">
+                <p class="dailyAmountUsed">{{ index < 3 ? 
+                                                asset : index > 3 ? 
+                                                    "" : "..."}}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -55,14 +64,16 @@
 <style scoped>
     .date {
         text-align: right;
+        padding-top: 20px;
     }
 
     h1 {
         display: inline;
         margin-left: 20px;
+        word-wrap: nowrap;
     }
 
-    .mouthContainer {
+    .monthContainer {
         padding: 30px;
         background-color: #88888800;
         width: 70vw;
@@ -74,5 +85,36 @@
 
     .day {
         background-color: rgba(0, 255, 255, 0.39);
+    }
+
+    .day:hover {
+        background-color: rgba(0, 255, 255, 0.642);
+    }
+    
+    .dailyAmountUsed {
+        font-size: 0.6em;
+    }
+
+    @media (max-width: 1024px) {
+        .monthContainer {
+            width: 100vw;
+        }
+        .date {
+            padding-top: 0px;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .monthContainer {
+            gap: 0px;
+            padding: 0 5px 0 5px;
+            height: 40vh;
+        }
+        .day {
+            border: 1px solid #777777;
+        }
+        h1 {
+            font-size: 1.6rem;
+        }
     }
 </style> 

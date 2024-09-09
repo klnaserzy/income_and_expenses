@@ -48,4 +48,29 @@
         border: 1px solid #000;
         width: 100%;
     }
+
+    @media (max-width: 1024px) {
+        .assetRecords {
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+            justify-content: space-around;
+            width: 100vw;
+            gap: 10px;
+        }
+
+        .divider {
+            display: none;
+        }
+
+        .grid {
+            margin: 10px auto 10px auto;
+        }
+    }
+
+    @media (max-width: 400px) {
+        h1, p {
+            font-size: 1.4rem;
+        }
+    }
 </style>
